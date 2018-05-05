@@ -15,8 +15,8 @@ import com.oracle.labor.po.Bip;
 import com.oracle.labor.po.BipExample;
 import com.oracle.labor.po.ZjGrqzdjb;
 import com.oracle.labor.po.ZjGrqzdjbExample;
-import com.oracle.labor.po.ZjGrqzdjjdb;
-import com.oracle.labor.po.ZjGrqzdjjdbExample;
+//import com.oracle.labor.po.ZjGrqzdjjdb;
+//import com.oracle.labor.po.ZjGrqzdjjdbExample;
 import com.oracle.labor.po.ZjGrqzgzb;
 import com.oracle.labor.po.ZjGrqzgzbExample;
 import com.oracle.labor.po.ZjTjxxhzb;
@@ -82,36 +82,6 @@ public class CommonService {
 		return grdj;
 	}
 	/**
-	 * 根据求职编号查询个人冻结解冻记录（不包括已归档的记录），若不存在则返回null
-	 * @param qzbh
-	 * @return
-	 */
-	public List<ZjGrqzdjjdb> qureyGrqzdjjd(String qzbh){
-		ZjGrqzdjjdbExample ge=new ZjGrqzdjjdbExample();
-		ge.createCriteria().andQzbhEqualTo(qzbh).andGdsjIsNull();
-		List<ZjGrqzdjjdb> grdjjd=new ArrayList<ZjGrqzdjjdb>();
-		grdjjd=grdjjdDao.selectByExample(ge);
-		if(grdjjd.isEmpty()) {
-			return null;
-		}
-		return grdjjd;
-	}
-	/**
-	 * 根据个人冻结解冻记录判断是否冻结，false为未冻结
-	 * @param grdjjd
-	 * @return
-	 */
-	public boolean isDj(List<ZjGrqzdjjdb> grdjjd) {
-		
-		if(grdjjd == null) {
-			return false;
-		}
-		if(grdjjd.get(grdjjd.size()-1).getJidsj() == null) {
-			return true;
-		}
-		return false;
-	}
-	/**
 	 * 根据求职编号查询个人求职工种（不包括已归档的记录），若不存在则返回null
 	 * @param qzbh
 	 * @return
@@ -157,4 +127,19 @@ public class CommonService {
 		}
 		return false;
 	}
+//	/**
+//	 * 根据求职编号查询个人冻结解冻记录（不包括已归档的记录），若不存在则返回null
+//	 * @param qzbh
+//	 * @return
+//	 */
+//	public List<ZjGrqzdjjdb> qureyGrqzdjjd(String qzbh){
+//		ZjGrqzdjjdbExample ge=new ZjGrqzdjjdbExample();
+//		ge.createCriteria().andQzbhEqualTo(qzbh).andGdsjIsNull();
+//		List<ZjGrqzdjjdb> grdjjd=new ArrayList<ZjGrqzdjjdb>();
+//		grdjjd=grdjjdDao.selectByExample(ge);
+//		if(grdjjd.isEmpty()) {
+//			return null;
+//		}
+//		return grdjjd;
+//	}
 }
