@@ -5,12 +5,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.oracle.labor.dao.BioMapper;
 import com.oracle.labor.dao.BipMapper;
 import com.oracle.labor.dao.ZjGrqzdjbMapper;
 import com.oracle.labor.dao.ZjGrqzdjjdbMapper;
 import com.oracle.labor.dao.ZjGrqzgzbMapper;
 import com.oracle.labor.dao.ZjTjxxhzbMapper;
+import com.oracle.labor.po.Bio;
+import com.oracle.labor.po.BioExample;
 import com.oracle.labor.po.Bip;
 import com.oracle.labor.po.BipExample;
 import com.oracle.labor.po.ZjGrqzdjb;
@@ -35,12 +39,15 @@ public class CommonService {
 	ZjGrqzgzbMapper grgzDao;
 	@Autowired
 	ZjTjxxhzbMapper hzDao;
+	@Autowired
+	BioMapper bioDao;
 	
 	/**
 	 * 根据身份证号查询个人信息，若不存在则返回null
 	 * @param id
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	public Bip qureyBipById(String id) {
 		BipExample be=new BipExample();
 		be.createCriteria().andBipCitizenidEqualTo(id);
@@ -56,6 +63,7 @@ public class CommonService {
 	 * @param name
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	public List<Bip> queryBipByName(String name){
 		BipExample be=new BipExample();
 		be.createCriteria().andBipNameEqualTo(name);
@@ -71,6 +79,7 @@ public class CommonService {
 	 * @param bipid
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	public List<ZjGrqzdjb> qureyGrqzdj(List<String> bipid) {
 		ZjGrqzdjbExample ze=new ZjGrqzdjbExample();
 		ze.createCriteria().andBipIdIn(bipid).andGdsjIsNull();
@@ -86,6 +95,7 @@ public class CommonService {
 	 * @param qzbh
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	public List<ZjGrqzgzb> queryGrgz(String qzbh){
 		ZjGrqzgzbExample ze=new ZjGrqzgzbExample();
 		ze.createCriteria().andQzbhEqualTo(qzbh).andGdsjIsNull();
@@ -101,6 +111,7 @@ public class CommonService {
 	 * @param gzbh
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	public List<ZjTjxxhzb> qureyHz(String gzbh){
 		ZjTjxxhzbExample ze=new ZjTjxxhzbExample();
 		ze.createCriteria().andQzgzbhEqualTo(gzbh);
@@ -116,6 +127,7 @@ public class CommonService {
 	 * @param hz
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	public boolean isHz(List<ZjTjxxhzb> hz) {
 		if(hz == null) {
 			return false;
@@ -132,6 +144,7 @@ public class CommonService {
 //	 * @param qzbh
 //	 * @return
 //	 */
+//	@Transactional(readOnly=true)
 //	public List<ZjGrqzdjjdb> qureyGrqzdjjd(String qzbh){
 //		ZjGrqzdjjdbExample ge=new ZjGrqzdjjdbExample();
 //		ge.createCriteria().andQzbhEqualTo(qzbh).andGdsjIsNull();
@@ -142,5 +155,20 @@ public class CommonService {
 //		}
 //		return grdjjd;
 //	}
-	
+	/**
+	 * 根据单位法人码查询单位信息，若不存在则返回null
+	 * @param no
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	public Bio qureyBioByNo(String no) {
+		BioExample be=new BioExample();
+		be.createCriteria().andBioNoEqualTo(no);
+		List<Bio> lb=new ArrayList<Bio>();
+		lb=bioDao.selectByExample(be);
+		if(lb.isEmpty()) {
+			return null;
+		}
+		return lb.get(0);
+	}
 }

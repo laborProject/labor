@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oracle.labor.dao.ZjTjxxhzbMapper">
+  <resultMap id="BaseResultMap" type="com.oracle.labor.po.ZjTjxxhzb">
+    <result column="TJXID" jdbcType="VARCHAR" property="tjxid" />
+    <result column="TJXLX" jdbcType="VARCHAR" property="tjxlx" />
+    <result column="QZGZBH" jdbcType="VARCHAR" property="qzgzbh" />
+    <result column="ZPGZBH" jdbcType="VARCHAR" property="zpgzbh" />
+    <result column="TJSJ" jdbcType="VARCHAR" property="tjsj" />
+    <result column="SFCG" jdbcType="VARCHAR" property="sfcg" />
+    <result column="JYYX" jdbcType="VARCHAR" property="jyyx" />
+    <result column="BCGYY" jdbcType="VARCHAR" property="bcgyy" />
+    <result column="SFHZ" jdbcType="VARCHAR" property="sfhz" />
+    <result column="HZSJ" jdbcType="VARCHAR" property="hzsj" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    TJXID, TJXLX, QZGZBH, ZPGZBH, TJSJ, SFCG, JYYX, BCGYY, SFHZ, HZSJ
+  </sql>
+  <select id="selectByExample" parameterType="com.oracle.labor.po.ZjTjxxhzbExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from zj_tjxxhzb
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.oracle.labor.po.ZjTjxxhzbExample">
+    delete from zj_tjxxhzb
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.oracle.labor.po.ZjTjxxhzb">
+    insert into zj_tjxxhzb (TJXID, TJXLX, QZGZBH, 
+      ZPGZBH, TJSJ, SFCG, 
+      JYYX, BCGYY, SFHZ, 
+      HZSJ)
+    values (#{tjxid,jdbcType=VARCHAR}, #{tjxlx,jdbcType=VARCHAR}, #{qzgzbh,jdbcType=VARCHAR}, 
+      #{zpgzbh,jdbcType=VARCHAR}, #{tjsj,jdbcType=VARCHAR}, #{sfcg,jdbcType=VARCHAR}, 
+      #{jyyx,jdbcType=VARCHAR}, #{bcgyy,jdbcType=VARCHAR}, #{sfhz,jdbcType=VARCHAR}, 
+      #{hzsj,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.oracle.labor.po.ZjTjxxhzb">
+    insert into zj_tjxxhzb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tjxid != null">
+        TJXID,
+      </if>
+      <if test="tjxlx != null">
+        TJXLX,
+      </if>
+      <if test="qzgzbh != null">
+        QZGZBH,
+      </if>
+      <if test="zpgzbh != null">
+        ZPGZBH,
+      </if>
+      <if test="tjsj != null">
+        TJSJ,
+      </if>
+      <if test="sfcg != null">
+        SFCG,
+      </if>
+      <if test="jyyx != null">
+        JYYX,
+      </if>
+      <if test="bcgyy != null">
+        BCGYY,
+      </if>
+      <if test="sfhz != null">
+        SFHZ,
+      </if>
+      <if test="hzsj != null">
+        HZSJ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tjxid != null">
+        #{tjxid,jdbcType=VARCHAR},
+      </if>
+      <if test="tjxlx != null">
+        #{tjxlx,jdbcType=VARCHAR},
+      </if>
+      <if test="qzgzbh != null">
+        #{qzgzbh,jdbcType=VARCHAR},
+      </if>
+      <if test="zpgzbh != null">
+        #{zpgzbh,jdbcType=VARCHAR},
+      </if>
+      <if test="tjsj != null">
+        #{tjsj,jdbcType=VARCHAR},
+      </if>
+      <if test="sfcg != null">
+        #{sfcg,jdbcType=VARCHAR},
+      </if>
+      <if test="jyyx != null">
+        #{jyyx,jdbcType=VARCHAR},
+      </if>
+      <if test="bcgyy != null">
+        #{bcgyy,jdbcType=VARCHAR},
+      </if>
+      <if test="sfhz != null">
+        #{sfhz,jdbcType=VARCHAR},
+      </if>
+      <if test="hzsj != null">
+        #{hzsj,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.oracle.labor.po.ZjTjxxhzbExample" resultType="java.lang.Long">
+    select count(*) from zj_tjxxhzb
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update zj_tjxxhzb
+    <set>
+      <if test="record.tjxid != null">
+        TJXID = #{record.tjxid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tjxlx != null">
+        TJXLX = #{record.tjxlx,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qzgzbh != null">
+        QZGZBH = #{record.qzgzbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zpgzbh != null">
+        ZPGZBH = #{record.zpgzbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tjsj != null">
+        TJSJ = #{record.tjsj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sfcg != null">
+        SFCG = #{record.sfcg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jyyx != null">
+        JYYX = #{record.jyyx,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bcgyy != null">
+        BCGYY = #{record.bcgyy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sfhz != null">
+        SFHZ = #{record.sfhz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hzsj != null">
+        HZSJ = #{record.hzsj,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update zj_tjxxhzb
+    set TJXID = #{record.tjxid,jdbcType=VARCHAR},
+      TJXLX = #{record.tjxlx,jdbcType=VARCHAR},
+      QZGZBH = #{record.qzgzbh,jdbcType=VARCHAR},
+      ZPGZBH = #{record.zpgzbh,jdbcType=VARCHAR},
+      TJSJ = #{record.tjsj,jdbcType=VARCHAR},
+      SFCG = #{record.sfcg,jdbcType=VARCHAR},
+      JYYX = #{record.jyyx,jdbcType=VARCHAR},
+      BCGYY = #{record.bcgyy,jdbcType=VARCHAR},
+      SFHZ = #{record.sfhz,jdbcType=VARCHAR},
+      HZSJ = #{record.hzsj,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

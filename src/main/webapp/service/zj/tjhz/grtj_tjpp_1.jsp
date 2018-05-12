@@ -6,15 +6,14 @@
 <title>条件匹配人员列表</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="<%=request.getContextPath()%>/styles/css/common.css" rel="stylesheet" type="text/css">
+<script src="<%=request.getContextPath()%>/js/jquery-1.11.1.js"></script>
 <script type="text/javascript">
-	function name (){
-		var id_name = document.getElementById("like").value;
-		if(id_name=="[]"){
-		
-			alert("该人员有未回执推荐信 或以冻结");
+	$(function(){
+		if($("#like").val() == "[null]" || $("#like").val() == ""){
+			alert("该人员有未回执推荐信或已冻结");
+			history.back(-1);
 		}
-		
-	}
+	})
 </script>
 </head>
 <body onload="name()">
@@ -43,6 +42,7 @@
         <td  valign="bottom">查询结果&nbsp;&nbsp;&nbsp;提示：[请选择个人进行推荐服务，点击姓名查看详细信息]</td>
       </tr>
     </table>
+    	<input id="like" type="hidden" value="${list }">
   <tr> 
     <td align="center" > <TABLE width="98%" border=1 cellPadding=0 cellSpacing=0 bordercolor="#FFFFFF" class=tablebody>
 		<!-- 页面跳转标志，1代表使用个人编号查询 -->    
@@ -54,18 +54,17 @@
               <TD align="center" class="line4">居住地址</TD>
               <TD align="center" class="line4">联系电话</TD>
               <TD align="center" class="line4">登记日期 </TD>
-              <input id="like" type="hidden" value="${list}">
             </TR>  
-           
-             <c:forEach items="${list}" var="m">
+      
+             <c:forEach items="${list }" var="info">
             <TR> 
-              <TD align="center" class="line4"><a href="<%=request.getContextPath()%>/service/zj/GrTjGZ.do?bip_id=${m.bip_id}&bip_citizenid=${m.bip_citizenid}&bip_name=${m.bip_name}">推荐</a></TD>
-              <TD align="center" class="line4">${m.bip_name}</TD>
-              <TD align="center" class="line4">${m.bip_sex.cd_name}</TD>
-              <TD align="center" class="line4">${m.bip_age}</TD>
-              <TD align="center" class="line4">${m.bip_res_address }</TD>
-              <TD align="center" class="line4">${m.bip_con_telephone}</TD>
-              <TD align="center" class="line4">${m.djsj}</TD>
+              <TD align="center" class="line4"><a href="">推荐</a></TD>
+              <TD align="center" class="line4">${info.bipId }</TD>
+              <TD align="center" class="line4">${info.bipName }</TD>
+              <TD align="center" class="line4">${info.bipSex }</TD>
+              <TD align="center" class="line4">${info.bipResAddress }</TD>
+              <TD align="center" class="line4">${info.bipConMobile }</TD>
+              <TD align="center" class="line4">${info.djsj }</TD>
             </TR>  
             </c:forEach>
 </table>
@@ -73,7 +72,7 @@
 <table align="center" width="98%"  border="0" cellspacing="0" cellpadding="0">
   <tr> 
     	<td class="line2" align="center">
-			<input name="button2" type="button"class=BUTTONs3  value="返 回" onClick="toBack();">
+			<input name="button2" type="button"class=BUTTONs3  value="返 回" onClick="javascript:history.back(-1);">
 		</td>
     </tr>
 </table>

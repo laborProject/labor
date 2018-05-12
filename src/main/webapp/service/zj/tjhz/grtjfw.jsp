@@ -1,10 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%
-	String flag = (String)request.getAttribute("flag");
-	if(flag == "0"){
-		out.print("<script>alert('该用户不存在或已被冻结，请核实!')</script>");
-	}
-%>
 <html>
 <head>
 <title>条件匹配</title>
@@ -31,45 +25,37 @@
 		form1.button.disabled = true;
 		form1.button2.disabled = true;
 		if(form1.flag.value=="tj"){
-			form1.action = "<%=request.getContextPath()%>/service/zj/GrTj.do";
+			form1.action = "../../../grtj/tj/getInfo";
 		}else{
-			form1.action = "<%=request.getContextPath()%>/service/zj/grqz/GrTjYxPp.do";
+			form1.action = "";
 		}
 		form1.submit();
 	}
 </script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.11.1.js"></script>
 <script type="text/javascript">
-	$(function (){
+	$(function(){
 	
-		$("#citizenid").blur(function (){
-		$.post("<%=request.getContextPath()%>/service/zj/grqz/GrTjName.do", { bip_citizenid :$("#citizenid").val()+":0"},
-   		function(data){
-     		  $("#name").val(data);
-   		});
+		$("#citizenid").blur(function(){	
+			$.post("../../../grtj/getName",{bip_citizenid:$("#citizenid").val()},function(data){
+				$("#name").val(data);
+   			});
 		})
 		
 		
-		$("#dwbip_citizenid").blur(function (){
-		$.post("<%=request.getContextPath()%>/service/zj/grqz/GrTjName.do", { bip_citizenid :$("#dwbip_citizenid").val()+":0"},
-   		function(data){
-     		  $("#dwbip_name").val(data);
-   		});
+		$("#dwbip_citizenid").blur(function(){
+			$.post("../../../grtj/getName",{bip_citizenid:$("#dwbip_citizenid").val()},function(data){
+     		  	$("#dwbip_name").val(data);
+   			});
 		})
 		
 		
-		
-		
-		$("#bio_no").blur(function (){
-		$.post("<%=request.getContextPath()%>/service/zj/grqz/GrTjName.do", { bip_citizenid :$("#bio_no").val()+":1"},
-   		function(data){
-     		  $("#bio_name").val(data);
-   		});
+		$("#bio_no").blur(function(){
+			$.post("../../../grtj/getCompnayName",{bio_no:$("#bio_no").val()},function(data){
+				$("#bio_name").val(data);
+   			});
 		})
    		
-   		
-   		
-   
 	});
 </script>
 </head>
@@ -153,7 +139,7 @@
                   </tr>    
                   <tr> 
                     <td width="103">单位法人码</td>
-                    <td width="194"> <input  id="bio_no" name="bio_no" type="text" maxlength="32"></td>
+                    <td width="194"> <input id="bio_no" name="bio_no" type="text" maxlength="32"></td>
                   </tr>   
                   <tr> 
                     <td width="103">单位&nbsp;&nbsp;&nbsp;名称</td>
