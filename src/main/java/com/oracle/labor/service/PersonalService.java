@@ -7,6 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.oracle.labor.common.codetable.ComputergradeOperation;
+import com.oracle.labor.common.codetable.Deformity;
+import com.oracle.labor.common.codetable.EducationallevelOperation;
+import com.oracle.labor.common.codetable.HealthstateOperation;
+import com.oracle.labor.common.codetable.MarriageOperation;
+import com.oracle.labor.common.codetable.NationOperation;
+import com.oracle.labor.common.codetable.PersonneltypeOperation;
+import com.oracle.labor.common.codetable.PoliticsaspectOperation;
+import com.oracle.labor.common.codetable.ProficiencyOperation;
+import com.oracle.labor.common.codetable.RprtypeOperation;
+import com.oracle.labor.common.codetable.SexOperation;
 import com.oracle.labor.po.Bip;
 import com.oracle.labor.po.PersonalInfo;
 import com.oracle.labor.po.ZjGrqzdjb;
@@ -49,7 +60,7 @@ public class PersonalService {
 		return service.qureyBioByNo(no).getBioName();
 	}
 	/**
-	 * 根据身份证号查询个人信息，若不存在、冻结或有未回执的推荐信返回null
+	 * 根据身份证号查询个人信息，若不存在则返回null，不包含冻结或有未回执的推荐信记录
 	 * @param id
 	 * @return
 	 */
@@ -63,9 +74,9 @@ public class PersonalService {
 		}
 		List<String> bipId=new ArrayList<String>();
 		bipId.add(bip.getBipId());
-		//在个人求职登记表中查询是否冻结及求职编号
+		//在个人求职登记表中查询求职编号
 		List<ZjGrqzdjb> grdj=service.qureyGrqzdj(bipId);
-		if(grdj == null || grdj.get(0).getSfdj() == "1") {
+		if(grdj == null) {
 			return null;
 		}
 		String qzbh=grdj.get(0).getQzbh();
@@ -81,6 +92,7 @@ public class PersonalService {
 		}
 		//封装个人信息
 		PersonalInfo pi=new PersonalInfo();
+		pi.setBipId(id);
 		pi.setBipName(bip.getBipName());
 		pi.setBipSex(bip.getBipSex());
 		pi.setBipAge(bip.getBipAge());
@@ -90,7 +102,7 @@ public class PersonalService {
 		return pi;
 	}
 	/**
-	 * 根据姓名查询个人信息，若不存在、冻结或有未回执的推荐信返回null
+	 * 根据姓名查询个人信息，若不存在则返回null，不包含冻结或有未回执的推荐信记录
 	 * @param name
 	 * @return
 	 */
@@ -106,7 +118,7 @@ public class PersonalService {
 		for(Bip b:bip) {
 			bipId.add(b.getBipId());
 		}
-		//在个人求职登记表中查询是否冻结及求职编号
+		//在个人求职登记表中查询求职编号
 		List<ZjGrqzdjb> grdj=service.qureyGrqzdj(bipId);
 		if(grdj == null) {
 			return null;
@@ -114,13 +126,8 @@ public class PersonalService {
 		String[] qzbh=new String[grdj.size()];
 		int j=0;
 		for(int i=0;i<grdj.size();i++) {
-			if(grdj.get(i).getSfdj() == "1") {
-				grdj.remove(i);
-				bip.remove(i);
-			}else {
-				qzbh[j]=grdj.get(i).getQzbh();
-				j++;
-			}
+			qzbh[j]=grdj.get(i).getQzbh();
+			j++;
 		}
 		//判断是否存在未回执的推荐信
 		for(int i=0;i<qzbh.length;i++) {
@@ -140,6 +147,7 @@ public class PersonalService {
 		List<PersonalInfo> lp=new ArrayList<PersonalInfo>();
 		for(int i=0;i<bip.size();i++) {
 			PersonalInfo pi=new PersonalInfo();
+			pi.setBipId(bip.get(i).getBipCitizenid());
 			pi.setBipName(bip.get(i).getBipName());
 			pi.setBipSex(bip.get(i).getBipSex());
 			pi.setBipAge(bip.get(i).getBipAge());
@@ -150,6 +158,36 @@ public class PersonalService {
 		}
 		return lp;
 	}
-	
+	/**
+	 * 将Bip中各项代码转换为名称（不包括户口所在地，文化程度一级）
+	 * @param bip
+	 * @return
+	 */
+	public Bip getBip(Bip bip) {
+		String id=bip.getBipSex();
+		bip.setBipSex(SexOperation.getNameById(id));
+		id=bip.getBipMinzu();
+		bip.setBipMinzu(NationOperation.getNameById(id));
+		id=bip.getBipZzmm();
+		bip.setBipZzmm(PoliticsaspectOperation.getNameById(id));
+		id=bip.getBipHyzk();
+		bip.setBipHyzk(MarriageOperation.getNameById(id));
+		id=bip.getBipHjxz();
+		bip.setBipHjxz(RprtypeOperation.getNameById(id));
+		id=bip.getBipRylb();
+		bip.setBipRylb(PersonneltypeOperation.getNameById(id));
+		id=bip.getBipJkzk();
+		bip.setBipJkzk(HealthstateOperation.getNameById(id));
+		id=bip.getBipCjqk();
+		bip.setBipCjqk(Deformity.getNameById(id));
+		id=bip.getBipWhcd();
+		bip.setBipWhcd(EducationallevelOperation.getNameById(id));
+		id=bip.getBipPcDj();
+		bip.setBipPcDj(ComputergradeOperation.getNameById(id));
+		id=bip.getBipPcSlcd();
+		bip.setBipPcSlcd(ProficiencyOperation.getNameById(id));
+		
+		return bip;
+	}
 	 
 }

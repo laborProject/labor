@@ -55,7 +55,7 @@ public class SpecialtyOperation implements IAppConfig{
 		}
 		return rt.toString();
 	}
-    //å¾—åˆ°å·¥ç§è¡Œä¸šçš„ä¿¡æ¯
+    //µÃµ½¹¤ÖÖµÄĞĞÒµĞÅÏ¢
 	public static String getHy(){
 		StringBuffer rt = new StringBuffer("<option></option>");
 		String name = "";
@@ -69,7 +69,7 @@ public class SpecialtyOperation implements IAppConfig{
 		}
 		return rt.toString();
 	}
-	//å¾—åˆ°ä¸‹å±å·¥ç§ä¿¡æ¯
+	//µÃµ½ÏÂÊô¹¤ÖÖĞÅÏ¢
 	public static String getGzReg(String string){
 		StringBuffer rt = new StringBuffer("<option></option>");
 		String zhengze = string;
@@ -93,7 +93,7 @@ public class SpecialtyOperation implements IAppConfig{
 		
 		String zhengze = string;
 		
-		//ä¸€çº§
+		//Ò»¼¶
 		if(string.endsWith("000000")){
 			zhengze="("+string.substring(0,1)+")"+"(0[1-9]{1}|[1-9]{1}[\\d]{1})[0]{4}";
 		}else if(string.endsWith("0000")){
@@ -110,7 +110,7 @@ public class SpecialtyOperation implements IAppConfig{
 //Â·-------------------------------------------------------------------------Â·//	
 	/**
 	 * @author Qyc
-	 * @see å¾—åˆ°ä¸€ä¸ªé’ˆå¯¹äºæŸä¸»é”®çš„Optionå†…å®¹
+	 * @see µÃµ½Ò»¸öÕë¶ÔÄ³Ö÷¼üµÄOptionÄÚÈİ
 	 */
 	public static String getSingleOption(String id){
 		if(id==null||"".equals(id)){
@@ -130,14 +130,14 @@ public class SpecialtyOperation implements IAppConfig{
 	}
 	/**
 	 * @author Qyc
-	 * @see å¾—åˆ°æœ‰åºçš„å²—ä½åç§°
+	 * @see µÃµ½ÓĞĞòµÄ¸ÚÎ»Ãû³Æ
 	 */
 	public static String getGwmc(){
 		return SpecialtyOperation.getOptionByRegex("[1-9]{1}[0]{6}");
 	}
 	/**
 	 * @author Qyc
-	 * @see ä¾æ®æ­£åˆ™è¡¨è¾¾å¼å¾—åˆ°æœ‰åºçš„option
+	 * @see ¸ù¾İÕıÔò±í´ïÊ½µÃµ½ÓĞĞòµÄoption
 	 */
 	public static String getOptionByRegex(String regex){
 		int count = 0;

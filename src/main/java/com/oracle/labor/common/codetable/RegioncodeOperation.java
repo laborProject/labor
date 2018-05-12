@@ -58,7 +58,7 @@ public class RegioncodeOperation implements IAppConfig{
 		}
 		return rt.toString();
 	}
-	//寰楀埌鍏ㄥ浗鎵�鏈夌渷
+	//得到全国所有的省
 	public static String getProvince(){
 		String regex = "[\\d]{2}[0]{10}";
 		StringBuffer rt = new StringBuffer("<option></option>");
@@ -84,7 +84,7 @@ public class RegioncodeOperation implements IAppConfig{
 		}
 		return rt.toString();
 	} 
-	//寰楀埌琚�夌殑琛屾斂鍖哄煙
+	//得到被选的行政区域
 	public static String getSelectedRegion(String selectedId,String region){
 		if(selectedId==null||"".equals(selectedId)||region==null||"".equals(region)){
 			return "";
@@ -95,7 +95,7 @@ public class RegioncodeOperation implements IAppConfig{
 			selectedId=selectedId.substring(0, 2)+"0000000000";
 		}else if("city".equals(region)){
 			
-			//鍖椾含鐗规畩澶勭悊
+			//北京的特殊处理
 			if(selectedId.startsWith("11")){
 				regex = "("+selectedId.substring(0,2)+")(0[1-9]{1}|[1-9]{1}[\\d]{1})[\\d]{2}[0]{6}";
 				selectedId=selectedId.substring(0, 6)+"000000";
@@ -149,7 +149,7 @@ public class RegioncodeOperation implements IAppConfig{
 		return rt.toString();
 	} 
 	
-	//渚濇嵁姝ｅ垯琛ㄨ揪寮忓緱鍒皁ption
+	//依据正则表达式得到Option
 	public static String getOptionByRegex(String regex){
 		int count = 0;
 		StringBuffer rt = new StringBuffer("<option></option>");

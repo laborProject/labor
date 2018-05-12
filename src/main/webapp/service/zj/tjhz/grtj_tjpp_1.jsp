@@ -17,6 +17,7 @@
 </script>
 </head>
 <body onload="name()">
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td><table width="98%"  border="0" align="center" cellpadding="0" cellspacing="0">
@@ -44,7 +45,8 @@
     </table>
     	<input id="like" type="hidden" value="${list }">
   <tr> 
-    <td align="center" > <TABLE width="98%" border=1 cellPadding=0 cellSpacing=0 bordercolor="#FFFFFF" class=tablebody>
+    <td align="center" > 
+    <TABLE width="98%" border=1 cellPadding=0 cellSpacing=0 bordercolor="#FFFFFF" class=tablebody>
 		<!-- 页面跳转标志，1代表使用个人编号查询 -->    
             <TR> 
               <TD align="center" class="line4">操作</TD>
@@ -58,13 +60,13 @@
       
              <c:forEach items="${list }" var="info">
             <TR> 
-              <TD align="center" class="line4"><a href="">推荐</a></TD>
-              <TD align="center" class="line4">${info.bipId }</TD>
+              <TD align="center" class="line4"><a href="<%=request.getContextPath()%>/grtj/tj/tj?bipName=${info.bipName }&bipSex=${info.bipSex }&address=${info.bipResAddress }&bipId=${info.bipId }">推荐</a></TD>
               <TD align="center" class="line4">${info.bipName }</TD>
               <TD align="center" class="line4">${info.bipSex }</TD>
+              <TD align="center" class="line4">${info.bipAge }</TD>
               <TD align="center" class="line4">${info.bipResAddress }</TD>
               <TD align="center" class="line4">${info.bipConMobile }</TD>
-              <TD align="center" class="line4">${info.djsj }</TD>
+              <TD align="center" class="line4">${info.djsj }</TD> 
             </TR>  
             </c:forEach>
 </table>

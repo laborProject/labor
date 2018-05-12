@@ -89,9 +89,9 @@
 			<TBODY>
             <TR>
               <TD width="98%" align="left" class="line2">
-              	&nbsp;姓名:<a href="javascript:void(null)" style="cursor:hand" onclick="window.open('<%=request.getContextPath() %>/','grjbxx','left=100 top=100 width=820,height=469 scrollbars')" ></a> &nbsp;&nbsp;&nbsp;&nbsp;
-              	性别： &nbsp;&nbsp;&nbsp;&nbsp;             
-              	居住地址：
+              	&nbsp;姓名:<a href="<%=request.getContextPath()%>/grtj/tj/xxxx?bipId=${personalInfo.bipId }" style="cursor:hand" target="_blank">${personalInfo.bipName }</a> &nbsp;&nbsp;&nbsp;&nbsp;
+              	性别：${personalInfo.bipSex } &nbsp;&nbsp;&nbsp;&nbsp;             
+              	居住地址：${personalInfo.bipResAddress }
               </TD>
             </TR>
         </TABLE>

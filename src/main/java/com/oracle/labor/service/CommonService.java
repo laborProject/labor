@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.oracle.labor.dao.BioMapper;
+import com.oracle.labor.dao.BipForeignlanguageMapper;
 import com.oracle.labor.dao.BipMapper;
+import com.oracle.labor.dao.BipSkillMapper;
 import com.oracle.labor.dao.ZjGrqzdjbMapper;
 import com.oracle.labor.dao.ZjGrqzdjjdbMapper;
 import com.oracle.labor.dao.ZjGrqzgzbMapper;
@@ -17,6 +19,10 @@ import com.oracle.labor.po.Bio;
 import com.oracle.labor.po.BioExample;
 import com.oracle.labor.po.Bip;
 import com.oracle.labor.po.BipExample;
+import com.oracle.labor.po.BipForeignlanguage;
+import com.oracle.labor.po.BipForeignlanguageExample;
+import com.oracle.labor.po.BipSkill;
+import com.oracle.labor.po.BipSkillExample;
 import com.oracle.labor.po.ZjGrqzdjb;
 import com.oracle.labor.po.ZjGrqzdjbExample;
 //import com.oracle.labor.po.ZjGrqzdjjdb;
@@ -25,7 +31,11 @@ import com.oracle.labor.po.ZjGrqzgzb;
 import com.oracle.labor.po.ZjGrqzgzbExample;
 import com.oracle.labor.po.ZjTjxxhzb;
 import com.oracle.labor.po.ZjTjxxhzbExample;
-
+/**
+ * 通用Service
+ * @author Marey
+ *
+ */
 @Service
 public class CommonService {
 
@@ -41,6 +51,10 @@ public class CommonService {
 	ZjTjxxhzbMapper hzDao;
 	@Autowired
 	BioMapper bioDao;
+	@Autowired
+	BipForeignlanguageMapper foreignDao;
+	@Autowired
+	BipSkillMapper skillDao;
 	
 	/**
 	 * 根据身份证号查询个人信息，若不存在则返回null
@@ -75,16 +89,19 @@ public class CommonService {
 		return bip;
 	}
 	/**
-	 * 根据个人编号查询个人求职登记信息（不包括已归档的记录），若不存在则返回null
+	 * 根据个人编号查询个人求职登记信息（不包括已归档或已冻结的记录），若不存在则返回null
 	 * @param bipid
 	 * @return
 	 */
 	@Transactional(readOnly=true)
 	public List<ZjGrqzdjb> qureyGrqzdj(List<String> bipid) {
 		ZjGrqzdjbExample ze=new ZjGrqzdjbExample();
-		ze.createCriteria().andBipIdIn(bipid).andGdsjIsNull();
+		ze.createCriteria().andBipIdIn(bipid).andGdsjIsNull().andSfdjIsNull();
 		List<ZjGrqzdjb> grdj=new ArrayList<ZjGrqzdjb>();
 		grdj=grdjDao.selectByExample(ze);
+		ze.clear();
+		ze.createCriteria().andBipIdIn(bipid).andSfdjNotEqualTo("1");
+		grdj.addAll(grdjDao.selectByExample(ze));
 		if(grdj.isEmpty()) {
 			return null;
 		}
@@ -170,5 +187,37 @@ public class CommonService {
 			return null;
 		}
 		return lb.get(0);
+	}
+	/**
+	 * 根据个人编号查询个人外语，若不存在则返回null
+	 * @param id
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	public List<BipForeignlanguage> qureyForeingnById(String id){
+		BipForeignlanguageExample bfe=new BipForeignlanguageExample();
+		bfe.createCriteria().andBipFlIdEqualTo(id);
+		List<BipForeignlanguage> list=new ArrayList<BipForeignlanguage>();
+		list=foreignDao.selectByExample(bfe);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return list;
+	}
+	/**
+	 * 根据个人编号查询个人技能，若不存在则返回null
+	 * @param id
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	public List<BipSkill> qureySkillById(String id){
+		BipSkillExample bse=new BipSkillExample();
+		bse.createCriteria().andBipIdEqualTo(id);
+		List<BipSkill> list=new ArrayList<BipSkill>();
+		list=skillDao.selectByExample(bse);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return list;
 	}
 }
