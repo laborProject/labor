@@ -4,7 +4,9 @@ import com.oracle.labor.po.BipForeignlanguage;
 import com.oracle.labor.po.BipForeignlanguageExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface BipForeignlanguageMapper {
     long countByExample(BipForeignlanguageExample example);
 

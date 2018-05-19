@@ -12,7 +12,7 @@
 		var dwhy =  document.getElementById("dwhy");
 		
 		if(dwhy.value.length!=0){
-			form1.action = "<%=request.getContextPath()%>/service/zj/grqz/GrTjPkDw.do";
+			form1.action = "<%=request.getContextPath()%>/grtj/tj/getCompnay";
 			form1.submit();
 		}else{
 			alert("请选择岗位");
@@ -23,38 +23,17 @@
 	}
 </script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.11.1.js"></script>
-<script type="text/javascript">
-
-
-	$(function (){
-		
-		$(".zpgzbhname").click(function (){
-		
-		
-		$.post("<%=request.getContextPath()%>/service/zj/GrTjDt.do", { name: $(this).val()},
-  		 function(data){
-  	
-  		 var str = data.split(":");
-  		
-  		 	$("#dwxz").html(str[0]);
-  		 	$("#dwhy").html(str[1]);
-  		 	$("#dwjjlx").html(str[2]);
-  			 $("#ppfw").html(str[3]);
-    	
-     
-  		 });
-  		 
-  		 
-  		
-  		 
-		});
-		
-	
-		
-		
-	});
-
+<script>
+	$(function(){
+		$("#dwxz").load("../../orgtype")
+		$("#dwhy").load("../../industry")
+		$("#dwjjlx").load("../../regtype")
+		$("#xb").load("../../sex")
+		$("#whcd").load("../../educationallevel")
+		$("#ppfw").load("../../specialty")
+	})
 </script>
+
 </head>
 <body>
 <form name="form1" action="" method="post">
@@ -111,7 +90,7 @@
             <TR>
               <TD width="115" align="right" class="line2" rowspan="<bean:write name='gzSum' scope='request' />">查找单位招聘工作为</TD>
               <TD class="line2">
-                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+               <%--  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
 					<td width="33%">
 						<table width="100%" border="0" align="center" cellpadding="0" cellspacing="1">
@@ -127,7 +106,7 @@
                            </c:forEach>
                           <td width="30%" class="line2" align="center">&quot;</td>
                           </tr>
-                    </table></td>
+                    </table> --%></td>
             </tr>
       </table>
     </TD>
@@ -137,56 +116,49 @@
             <TR>
               <TD width="13%" align="right" class="line1">单位性质</TD>
               <TD width="20%" align="center" class="line1">
-                <select id="dwxz"  name="dwxz" size="1"  style="WIDTH: 100%" onChange="sfxsjjlx()">
-      			
-                </select></TD>
+                <select id="dwxz"  name="dwxz" size="1"  style="WIDTH: 100%" ></select>
+              </TD>
               <TD width="13%" align="right" class="line1">单位行业</TD>
               <TD width="20%" align="center" class="line1">
-             
-				<select  id="dwhy"  name="dwhy" size="1"  style="WIDTH: 100%">
-
-			
-				
-                </select></TD>
-                <TD  width="13%" align="right" class="line2">经济类型</TD>
+				<select  id="dwhy"  name="dwhy" size="1"  style="WIDTH: 100%"></select>
+              </TD>
+              <TD  width="13%" align="right" class="line2">经济类型</TD>
               <TD  width="20%" align="center" class="line2">
-			  <select id = "dwjjlx" name="dwjjlx" size="1"  style="WIDTH: 100%">
-				
-              </select></TD>
+			  	<select id = "dwjjlx" name="dwjjlx" size="1"  style="WIDTH: 100%"></select>
+              </TD>
             </TR>
             <TR>
                 <TD align="right" class="line1">性别</TD>
-              <TD align="center" class="line1">
-			  <select name="xb" size="1"  style="WIDTH: 100%">
-				${map.bip_sex }
-              </select> </TD>
-              <TD align="right" class="line1">应届毕业生</TD>
-              <TD align="left" class="line1"> 
-			     <SELECT  NAME="ppfw" style="WIDTH: 100%">
-			     	${map.bip_t_newgraduate }
-				</SELECT>
-              </TD>
-             
+              	<TD align="center" class="line1">
+			  		<select id="xb" name="xb" size="1"  style="WIDTH: 100%"></select> 
+			  	</TD>
+              	<TD align="right" class="line1">应届毕业生</TD>
+              	<TD align="left" class="line1"> 
+			     <SELECT  NAME="yjbys" style="WIDTH: 100%">
+			     	<option></option>
+			     	<option value="1">是</option>
+			     	<option value="0">否</option>
+			     </SELECT>
+              	</TD>
+
               <TD align="right" class="line2">文化程度</TD>
               <TD align="center" class="line2">
-			  <select name="whcd" size="1"  style="WIDTH: 100%">
-				${map.bip_whcd }
-                </select></TD>
+			  	<select id="whcd" name="whcd" size="1"  style="WIDTH: 100%"></select>
+			  </TD>
             </TR>
             <TR>
              <TD align="right" class="line2">工种匹配范围</TD>
-              <TD align="center" class="line2">
-				<SELECT  id="ppfw"  NAME="gzppfw" style="WIDTH: 100%">
-				
-				</SELECT>
-			  </TD>
+             <TD align="center" class="line2">
+				<SELECT  id="ppfw"  NAME="gzppfw" style="WIDTH: 100%"></SELECT>
+			 </TD>
             </TR>
         </TABLE>
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr>
 		<td align="center"  class="line2"> <input name="button2" type="button"class=BUTTONs3  value="确 定" onClick="doSubmit()">
-	    &nbsp;&nbsp;<input name="button232" type="button"class=BUTTONs3 onClick="toBack()" value="返 回"></td>
+	    &nbsp;&nbsp;<input name="button232" type="button"class=BUTTONs3 onClick="javascript:history.back(-1);" value="返 回"></td>
 	</tr>
 </table>
+</form>
 </body>
 </html>

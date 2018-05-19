@@ -16,6 +16,7 @@ import com.oracle.labor.common.config.IAppConfig;
 import com.oracle.labor.common.config.SystemConfig;
 
 
+@SuppressWarnings("serial")
 public class AppLoad extends HttpServlet{
 	
 	

@@ -4,7 +4,9 @@ import com.oracle.labor.po.BipSkill;
 import com.oracle.labor.po.BipSkillExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface BipSkillMapper {
     long countByExample(BipSkillExample example);
 

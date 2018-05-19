@@ -8,16 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oracle.labor.common.codetable.EducationallevelOperation;
-import com.oracle.labor.common.codetable.IndustryOperation;
-import com.oracle.labor.common.codetable.OrgtypeOperation;
-import com.oracle.labor.common.codetable.RegtypeOperation;
-import com.oracle.labor.common.codetable.SexOperation;
-import com.oracle.labor.common.codetable.SpecialtyOperation;
+import com.oracle.labor.po.Bio;
 import com.oracle.labor.po.Bip;
 import com.oracle.labor.po.BipForeignlanguage;
 import com.oracle.labor.po.BipSkill;
@@ -41,19 +35,37 @@ public class PersonalHandler {
 	@Autowired
 	CommonService cs;
 	
+	/**
+	 * 个人推荐页
+	 * 根据身份证号回显姓名
+	 * @param bip_citizenid
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("/getName")
+	@RequestMapping(value="/getName",produces="text/html;charset=UTF-8")
 	public String getNameById(String bip_citizenid) {
 
 		return ps.getNameById(bip_citizenid);
 	}
-	
+	/**
+	 * 个人推荐页
+	 * 根据单位法人码回显单位名称
+	 * @param bio_no
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("/getCompnayName")
+	@RequestMapping(value="/getCompnayName",produces="text/html;charset=UTF-8")
 	public String getCompanyName(String bio_no) {
 		return ps.getCompanyNameByNo(bio_no);
 	}
-	
+	/**
+	 * 根据身份证号或者姓名获得简单个人信息
+	 * 在条件推荐第一页显示
+	 * @param bip_citizenid
+	 * @param bip_name
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping("/tj/getInfo")
 	public String getPersonalInfo(String bip_citizenid,String bip_name,Map<String,Object> map) {
 		
@@ -66,10 +78,14 @@ public class PersonalHandler {
 		map.put("list", pl);
 		return "service/zj/tjhz/grtj_tjpp_1";
 	}
-	
+	/**
+	 * 条件推荐第二页的个人基础信息
+	 * @param request
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping("/tj/tj")
 	public String getInfo(HttpServletRequest request,Map<String,Object> map) {
-		
 		
 		PersonalInfo pi=new PersonalInfo();
 		pi.setBipId(request.getParameter("bipId"));
@@ -77,32 +93,35 @@ public class PersonalHandler {
 		pi.setBipSex(request.getParameter("bipSex"));
 		pi.setBipResAddress(request.getParameter("address"));
 		map.put("personalInfo", pi);
-		map.put("orgtype", OrgtypeOperation.getOption());
-		map.put("industry", IndustryOperation.getOption());
-		map.put("regtype", RegtypeOperation.getOption());
-		map.put("sex", SexOperation.getOption());
-		map.put("educationallevel", EducationallevelOperation.getOption());
-		map.put("specialty", SpecialtyOperation.getOption());
-		
+
 		return "service/zj/tjhz/grtj_tjpp_2";
 	}
-	
+	/**
+	 * 条件推荐第二页点击姓名查看个人详细信息
+	 * @param request
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping("/tj/xxxx")
 	public String getDetail(HttpServletRequest request,Map<String,Object> map) {
 		
+		//身份证号
 		String bipId=request.getParameter("bipId");
 		Bip bip=new Bip();
-		bip=cs.qureyBipById(bipId);
+		bip=cs.getBip(cs.qureyBipById(bipId));
+		//个人编号
 		List<String> id=new ArrayList<String>();
 		id.add(bip.getBipId());
+		
 		List<BipForeignlanguage> lf=new ArrayList<BipForeignlanguage>();
-		lf=cs.qureyForeingnById(bipId);
+		lf=cs.getForeingn(cs.qureyForeingnById(id.get(0)));
 		List<BipSkill> ls=new ArrayList<BipSkill>();
-		ls=cs.qureySkillById(bipId);
+		ls=cs.getSkill(cs.qureySkillById(id.get(0)));
+		
 		ZjGrqzdjb djb=new ZjGrqzdjb();
-		djb=cs.qureyGrqzdj(id).get(0);
+		djb=cs.getQzdj(cs.qureyGrqzdj(id).get(0));
 		List<ZjGrqzgzb> gzb=new ArrayList<ZjGrqzgzb>();
-		gzb=cs.queryGrgz(djb.getQzbh());
+		gzb=cs.getGz(cs.queryGrgz(djb.getQzbh()));
 	
 		map.put("bip", bip);
 		map.put("foreign", lf);
@@ -111,5 +130,11 @@ public class PersonalHandler {
 		map.put("gzb", gzb);
 		
 		return "service/zj/tjhz/grjbxx";
+	}
+	@RequestMapping("/tj/getCompnay")
+	public String getCompany(String dwxz,String dwhy,String dwjjlx,String xb,String yjbys,String whcd,String gzppfw) {
+		
+		List<Bio> bio=ps.qureyBio(dwxz, dwhy, dwjjlx);
+		return "";
 	}
 }
