@@ -15,7 +15,10 @@ import com.oracle.labor.po.Bio;
 import com.oracle.labor.po.Bip;
 import com.oracle.labor.po.BipForeignlanguage;
 import com.oracle.labor.po.BipSkill;
+import com.oracle.labor.po.CompanyInfo;
 import com.oracle.labor.po.PersonalInfo;
+import com.oracle.labor.po.ZjDwzpdjb;
+import com.oracle.labor.po.ZjDwzpgzb;
 import com.oracle.labor.po.ZjGrqzdjb;
 import com.oracle.labor.po.ZjGrqzgzb;
 import com.oracle.labor.service.CommonService;
@@ -131,10 +134,38 @@ public class PersonalHandler {
 		
 		return "service/zj/tjhz/grjbxx";
 	}
+	
 	@RequestMapping("/tj/getCompnay")
-	public String getCompany(String dwxz,String dwhy,String dwjjlx,String xb,String yjbys,String whcd,String gzppfw) {
+	public String getCompany(String dwxz,String dwhy,String dwjjlx,String xb,String yjbys,String whcd,String gzppfw,Map<String,Object> map) {
+		
+		List<CompanyInfo> lc=new ArrayList<CompanyInfo>();
 		
 		List<Bio> bio=ps.qureyBio(dwxz, dwhy, dwjjlx);
-		return "";
+		if(bio != null) {
+			List<String> id=new ArrayList<String>();
+			for(Bio b:bio) {
+				id.add(b.getBioId());
+			}
+			List<ZjDwzpdjb> djb=cs.qureyDwdjbById(id);
+			System.out.println(djb.size());
+			if(djb != null) {
+				for(ZjDwzpdjb z:djb) {
+					List<ZjDwzpgzb> gzb=cs.qureyDwgz(z.getZpbh());
+					if(gzb != null) {
+						System.out.println(gzb);
+						String[] zpbh=ps.select(gzb, xb, whcd, yjbys, gzppfw);
+						System.out.println(zpbh.length);
+						if(zpbh != null) {
+							lc=ps.qureyDwxx(bio, djb, zpbh);
+						}
+					}
+				}
+			}
+		}
+		map.put("companyInfo", lc);
+		System.out.println(bio.size());
+		System.out.println(lc.size());
+		
+		return "service/zj/tjhz/grtj_tjpp_3";
 	}
 }

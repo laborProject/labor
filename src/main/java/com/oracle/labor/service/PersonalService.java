@@ -2,7 +2,6 @@ package com.oracle.labor.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -197,31 +196,69 @@ public class PersonalService {
 	 * @param whcd
 	 * @param yjbys
 	 * @param gzppfw
-	 * @return 招聘编号
+	 * @return 招聘编号数组
 	 */
 	public String[] select(List<ZjDwzpgzb> dwgz,String xb,String whcd,String yjbys,String gzppfw){
 	
 		String[] zpbh=new String[dwgz.size()];
-		
+		int j=0;
 		for(int i=0;i<dwgz.size();i++) {
 			if(xb != "") {
-				String sex=SexOperation.getNameById(xb);
-				if(sex.equals("男")) {
+				if(xb.equals("1")) {
 					if(dwgz.get(i).getZprsn().equals("0") && dwgz.get(i).getXbbx().equals("0")) {
 						continue;
 					}
 				}
-				if(sex.equals("女")) {
+				if(xb.equals("2")) {
 					if(dwgz.get(i).getZprsnv().equals("0") && dwgz.get(i).getXbbx().equals("0")) {
 						continue;
 					}
 				}	
 			}
 			if(whcd != "") {
-				
+				if(dwgz.get(i).getWhcd().equals(whcd)) {
+					continue;
+				}
 			}
+			if(yjbys != "") {
+				if(dwgz.get(i).getSfbys() != yjbys) {
+					continue;
+				}
+			}
+			if(gzppfw !="") {
+				if(dwgz.get(i).getZpgz().charAt(0) != gzppfw.charAt(0) || (dwgz.get(i).getZpgz().startsWith("6") && gzppfw.charAt(0) != 9)) {
+					continue;
+				}
+			}
+			zpbh[j]=dwgz.get(i).getZpbh();
+			j++;
 		}
 		
 		return zpbh;
 	}
+	/**
+	 * 根据筛选后工种编号封装简单单位信息
+	 * @param bio
+	 * @param djb
+	 * @param zpbh
+	 * @return 简单单位信息List
+	 */
+	public List<CompanyInfo> qureyDwxx(List<Bio> bio,List<ZjDwzpdjb> djb,String[] zpbh){
+		
+		List<CompanyInfo> list =new ArrayList<CompanyInfo>();
+		for(int i=0;i<djb.size();i++) {
+			for(int j=0;j<zpbh.length;j++) {
+				if(djb.get(i).getZpbh().equals(zpbh[j])) {
+					CompanyInfo ci=new CompanyInfo();
+					ci.setZpbh(zpbh[j]);
+					ci.setBioName(bio.get(i).getBioName());
+					ci.setBioBuaAddress(bio.get(i).getBioBuaAddress());
+					ci.setLxrsj(djb.get(i).getLxrsj());
+					ci.setDjsj(djb.get(i).getDjsj());
+				}
+			}
+		}
+		return list;
+	}
 }
+

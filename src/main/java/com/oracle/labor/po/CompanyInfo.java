@@ -9,6 +9,8 @@ public class CompanyInfo {
 	private String bioBuaAddress;
 	
 	private String lxrsj;
+	
+	private String djsj;
 
 	public String getZpbh() {
 		return zpbh;
@@ -40,6 +42,14 @@ public class CompanyInfo {
 
 	public void setLxrsj(String lxrsj) {
 		this.lxrsj = lxrsj;
+	}
+
+	public String getDjsj() {
+		return djsj;
+	}
+
+	public void setDjsj(String djsj) {
+		this.djsj = djsj;
 	}
 	
 }
